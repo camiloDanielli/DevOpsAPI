@@ -24,7 +24,7 @@ pipeline {
                 sh '''
                 nohup python3 main.py > server.log 2>&1 &
                 sleep 5  # espera que el server arranque
-                curl --fail http://localhost:5000 || exit 1
+                curl --fail http://localhost:8000 || exit 1
                 echo "Server is up!"
                 '''
             }
