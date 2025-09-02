@@ -1,5 +1,5 @@
 pipeline {
-    agent any  // cualquier nodo disponible para checkout
+    agent { label 'default' }
 
     stages {
         stage('Checkout') {
@@ -8,19 +8,20 @@ pipeline {
             }
         }
 
-        stage('Run main.py') {
-            agent {
-                docker {
-                    image 'python:3.11-slim' // contenedor con Python 3
-                    args '-v $WORKSPACE:$WORKSPACE' // monta el workspace
-                }
-            }
+        stage('Setup Python') {
             steps {
                 sh '''
+                python3 -m venv venv
+                . venv/bin/activate
                 pip install --upgrade pip
                 if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-                python main.py
                 '''
+            }
+        }
+
+        stage('Run main.py') {
+            steps {
+                sh '. venv/bin/activate && python main.py'
             }
         }
     }
