@@ -21,7 +21,7 @@ pipeline {
         stage('Run main.py') {
             steps {
                 // Ejecuta tu main.py con Python3
-                sh '. venv/bin/activate && python main.py'
+                sh '. venv/bin/activate && python3 main.py'
             }
         }
     }
